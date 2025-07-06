@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>DiagnoseAI - Meddy</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}" />
+  <script>const symptoms = {{ data | tojson | safe }};</script>
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body.dark-mode {
+      background-color: #0b132b !important;
+      color: #ffffff !important;
+    }
+
+    body.dark-mode .card,
+    body.dark-mode .chat-body,
+    body.dark-mode .form-control,
+    body.dark-mode .bot-message,
+    body.dark-mode .user-message {
+      background-color: #1c2541 !important;
+      color: #ffffff !important;
+    }
+
+    body.dark-mode .navbar,
+    body.dark-mode .footer {
+      background-color: #060c1a !important;
+    }
+
+    .hero-section {
+      height: 100vh;
+      background: linear-gradient(rgba(0, 51, 102, 0.8), rgba(0, 51, 102, 0.8)), url('https://www.transparenttextures.com/patterns/stardust.png');
+      background-size: cover;
+      color: #fff;
+    }
+
+    .bot-message,
+    .user-message {
+      padding: 8px 12px;
+      margin-bottom: 10px;
+      border-radius: 10px;
+      max-width: 80%;
+    }
+
+    .bot-message {
+      background-color: #e9f5ff;
+    }
+
+    .user-message {
+      background-color: #d1ecf1;
+      align-self: flex-end;
+    }
+
+    #conversation {
+      display: flex;
+      flex-direction: column;
+    }
+
+    #toggle-dark {
+      cursor: pointer;
+    }
+
+    .navbar-brand span {
+      color: #ffc107;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- 🌐 Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-primary sticky-top">
+    <div class="container-fluid px-4">
+      <a class="navbar-brand fw-bold" href="#">Diagnose<span>AI</span></a>
+      <div class="ms-auto d-flex align-items-center">
+        <button id="toggle-dark" class="btn btn-outline-light btn-sm"><i class="fas fa-moon"></i></button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="hero-section d-flex align-items-center justify-content-center flex-column text-center px-3">
+    <h1 class="display-4 fw-bold">Meet <span class="text-warning">Meddy</span></h1>
+    <p class="lead">AI-powered health assistant by <strong>Sundram Rai</strong></p>
+    <a href="#assistant" class="btn btn-warning btn-lg mt-3">Start Diagnosis</a>
+    <a href="#ask-ai-section" id="ask-general-btn" class="btn btn-success btn-lg mt-3">Ask General Health Query</a>
+  </section>
+
+  <!-- Features Section -->
+  <section class="features py-5 bg-light text-center">
+    <div class="container">
+      <h2 class="mb-4 fw-bold">Why Meddy?</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="card p-4 h-100 shadow">
+            <i class="fa-solid fa-user-doctor fa-2x mb-3 text-primary"></i>
+            <h5>Personalized Diagnosis</h5>
+            <p>Illness predictions tailored to your symptoms and profile.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card p-4 h-100 shadow">
+            <i class="fa-solid fa-comments fa-2x mb-3 text-success"></i>
+            <h5>Interactive AI Assistant</h5>
+            <p>Chat live with Meddy about health and lifestyle concerns.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="card p-4 h-100 shadow">
+            <i class="fa-solid fa-file-pdf fa-2x mb-3 text-danger"></i>
+            <h5>Instant Reports</h5>
+            <p>Download summaries to share with your doctor anytime.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Assistant Section -->
+  <section id="assistant" class="container py-5">
+    <div class="text-center mb-4">
+      <h2 class="fw-bold">Talk to Meddy Now</h2>
+      <p class="text-muted">Your virtual diagnosis companion</p>
+    </div>
+
+    <div id="user-details" class="row justify-content-center mb-4">
+      <div class="col-md-6">
+        <input type="text" id="user-name" class="form-control mb-2" placeholder="Enter your name" />
+        <input type="number" id="user-age" class="form-control mb-2" placeholder="Enter your age" />
+        <select id="user-gender" class="form-control mb-3">
+          <option value="">Select Gender</option>
+          <option value="male">Male</option>
+          <option value="female">Female</option>
+        </select>
+        <button id="submit-details" class="btn btn-primary w-100">Start Chat</button>
+      </div>
+    </div>
+
+    <div class="chat-body bg-white p-4 border rounded mb-3" id="conversation" style="display: none; max-height: 400px; overflow-y: auto;">
+      <div class="bot-message">
+        Hello! I am <b>Meddy</b>, your AI health buddy. Describe your symptoms like <i>fever, fatigue</i> and hit "Done".
+      </div>
+    </div>
+
+    <div class="d-flex gap-2 mb-3" id="chat-input-box" style="display: none;">
+      <input type="text" id="message-text" class="form-control" placeholder="Enter your symptom(s)..." />
+      <button id="mic-btn" class="btn btn-light"><i class="fas fa-microphone"></i></button>
+      <button id="send" class="btn btn-primary"><i class="fas fa-paper-plane"></i></button>
+    </div>
+
+    <div class="symptoms-list-container" style="display: none;">
+      <ul id="symptoms-list" class="list-group small shadow-sm"></ul>
+    </div>
+
+    <div class="text-center my-3" id="pdf-section" style="display: none;">
+      <a id="download-pdf" class="btn btn-danger" href="/download_pdf" download><i class="fas fa-file-pdf"></i> Download Report</a>
+    </div>
+  </section>
+
+  <!-- Ask Meddy Section -->
+  <section id="ask-ai-section" class="bg-light p-4 rounded shadow-sm container mb-5" style="display: none;">
+    <h5 class="text-center mb-3"><i class="fas fa-robot text-success"></i> Ask Meddy Anything</h5>
+    <input type="text" id="ask-ai-input" class="form-control mb-2" placeholder="Ask about diet, symptoms, medicines..." />
+    <div class="d-grid">
+      <button id="ask-ai-btn" class="btn btn-success">Ask</button>
+    </div>
+    <div id="ai-reply" class="mt-3 text-dark" style="white-space: pre-wrap;"></div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer text-center py-3 bg-dark text-white">
+    <div class="container">
+      <p class="mb-0">&copy; 2025 Meddy by Sundram Rai. All rights reserved. | DiagnoseAI Project</p>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+  <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+</body>
+</html>

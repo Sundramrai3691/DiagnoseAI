@@ -1,0 +1,110 @@
+2025-07-06 16:55:54,288 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-07-06 16:55:54,305 - [33mPress CTRL+C to quit[0m
+2025-07-06 16:55:54,321 -  * Restarting with stat
+2025-07-06 16:56:01,877 -  * Debugger is active!
+2025-07-06 16:56:01,881 -  * Debugger PIN: 113-905-724
+2025-07-06 16:57:52,811 - 127.0.0.1 - - [06/Jul/2025 16:57:52] "GET / HTTP/1.1" 200 -
+2025-07-06 16:57:53,710 - 127.0.0.1 - - [06/Jul/2025 16:57:53] "GET /static/css/styles.css HTTP/1.1" 200 -
+2025-07-06 16:57:53,882 - 127.0.0.1 - - [06/Jul/2025 16:57:53] "GET /static/js/main.js HTTP/1.1" 200 -
+2025-07-06 16:58:32,429 - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-07-06 16:58:32,429 - Retrying request to /chat/completions in 0.458877 seconds
+2025-07-06 16:58:33,901 - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-07-06 16:58:33,901 - Retrying request to /chat/completions in 0.844769 seconds
+2025-07-06 16:58:36,025 - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-07-06 16:58:39,741 - 127.0.0.1 - - [06/Jul/2025 16:58:39] "POST /symptom HTTP/1.1" 200 -
+2025-07-06 16:58:40,593 - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-07-06 16:58:40,593 - Retrying request to /chat/completions in 0.410856 seconds
+2025-07-06 16:58:41,937 - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-07-06 16:58:41,937 - Retrying request to /chat/completions in 0.945688 seconds
+2025-07-06 16:58:44,745 - HTTP Request: POST https://api.openai.com/v1/chat/completions "HTTP/1.1 429 Too Many Requests"
+2025-07-06 16:58:44,745 - 127.0.0.1 - - [06/Jul/2025 16:58:44] "POST /symptom HTTP/1.1" 200 -
+2025-07-06 17:56:48,623 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-07-06 17:56:49,110 - [33mPress CTRL+C to quit[0m
+2025-07-06 17:56:49,361 -  * Restarting with stat
+2025-07-06 17:57:00,862 -  * Debugger is active!
+2025-07-06 17:57:00,877 -  * Debugger PIN: 113-905-724
+2025-07-06 18:09:21,067 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-07-06 18:09:21,067 - [33mPress CTRL+C to quit[0m
+2025-07-06 18:14:29,438 - 127.0.0.1 - - [06/Jul/2025 18:14:29] "GET / HTTP/1.1" 200 -
+2025-07-06 18:14:29,930 - 127.0.0.1 - - [06/Jul/2025 18:14:29] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-07-06 18:14:29,930 - 127.0.0.1 - - [06/Jul/2025 18:14:29] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2025-07-06 18:14:37,975 - 127.0.0.1 - - [06/Jul/2025 18:14:37] "POST /start HTTP/1.1" 200 -
+2025-07-06 18:14:59,571 - 127.0.0.1 - - [06/Jul/2025 18:14:59] "POST /symptom HTTP/1.1" 200 -
+2025-07-06 18:14:59,671 - 127.0.0.1 - - [06/Jul/2025 18:14:59] "POST /symptom HTTP/1.1" 200 -
+2025-07-06 18:15:06,681 - 127.0.0.1 - - [06/Jul/2025 18:15:06] "POST /symptom HTTP/1.1" 200 -
+2025-07-06 18:15:26,446 - Could not get image data from src attribute: /static/img/logo.jpg
+'<img src="/static/img/logo.jpg" alt="Meddy Logo" class="logo"/>'
+2025-07-06 18:15:26,446 - Could not get image data from src attribute: /static/img/logo.jpg
+'<img src="/static/img/logo.jpg" alt="Meddy Logo" class="logo"/>'
+2025-07-06 18:15:26,496 - 127.0.0.1 - - [06/Jul/2025 18:15:26] "GET /download_pdf HTTP/1.1" 200 -
+2025-07-06 18:15:26,499 - 127.0.0.1 - - [06/Jul/2025 18:15:26] "GET /download_pdf HTTP/1.1" 200 -
+2025-07-06 18:16:23,137 - 127.0.0.1 - - [06/Jul/2025 18:16:23] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2025-07-06 18:16:23,281 - 127.0.0.1 - - [06/Jul/2025 18:16:23] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2025-07-06 18:16:24,763 - 127.0.0.1 - - [06/Jul/2025 18:16:24] "GET / HTTP/1.1" 200 -
+2025-07-06 18:16:24,787 - 127.0.0.1 - - [06/Jul/2025 18:16:24] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2025-07-06 18:16:24,811 - 127.0.0.1 - - [06/Jul/2025 18:16:24] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-07-06 18:16:24,817 - 127.0.0.1 - - [06/Jul/2025 18:16:24] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -
+2025-07-06 18:16:45,433 - 127.0.0.1 - - [06/Jul/2025 18:16:45] "POST /symptom HTTP/1.1" 200 -
+2025-07-06 18:16:51,984 - 127.0.0.1 - - [06/Jul/2025 18:16:51] "POST /symptom HTTP/1.1" 200 -
+2025-07-06 18:16:57,025 - Could not get image data from src attribute: /static/img/logo.jpg
+'<img src="/static/img/logo.jpg" alt="Meddy Logo" class="logo"/>'
+2025-07-06 18:16:57,047 - 127.0.0.1 - - [06/Jul/2025 18:16:57] "GET /download_pdf HTTP/1.1" 200 -
+2025-07-06 18:16:57,062 - Could not get image data from src attribute: /static/img/logo.jpg
+'<img src="/static/img/logo.jpg" alt="Meddy Logo" class="logo"/>'
+2025-07-06 18:16:57,078 - 127.0.0.1 - - [06/Jul/2025 18:16:57] "GET /download_pdf HTTP/1.1" 200 -
+2025-07-06 18:45:35,357 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-07-06 18:45:35,357 - [33mPress CTRL+C to quit[0m
+2025-07-06 18:47:03,467 - 127.0.0.1 - - [06/Jul/2025 18:47:03] "GET / HTTP/1.1" 200 -
+2025-07-06 18:47:03,639 - 127.0.0.1 - - [06/Jul/2025 18:47:03] "GET /static/js/main.js HTTP/1.1" 200 -
+2025-07-06 18:47:04,105 - 127.0.0.1 - - [06/Jul/2025 18:47:04] "GET /static/css/styles.css HTTP/1.1" 200 -
+2025-07-06 18:47:19,379 - 127.0.0.1 - - [06/Jul/2025 18:47:19] "POST /start HTTP/1.1" 200 -
+2025-07-06 18:47:44,833 - 127.0.0.1 - - [06/Jul/2025 18:47:44] "POST /symptom HTTP/1.1" 200 -
+2025-07-06 18:47:44,870 - 127.0.0.1 - - [06/Jul/2025 18:47:44] "POST /symptom HTTP/1.1" 200 -
+2025-07-06 18:47:45,184 - 127.0.0.1 - - [06/Jul/2025 18:47:45] "POST /symptom HTTP/1.1" 200 -
+2025-07-06 18:47:50,062 - 127.0.0.1 - - [06/Jul/2025 18:47:50] "POST /symptom HTTP/1.1" 200 -
+2025-07-06 19:02:57,068 - 127.0.0.1 - - [06/Jul/2025 19:02:57] "GET / HTTP/1.1" 200 -
+2025-07-06 19:02:57,084 - 127.0.0.1 - - [06/Jul/2025 19:02:57] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2025-07-06 19:02:58,296 - 127.0.0.1 - - [06/Jul/2025 19:02:58] "GET /static/js/main.js HTTP/1.1" 200 -
+2025-07-06 19:02:58,630 - 127.0.0.1 - - [06/Jul/2025 19:02:58] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-07-06 19:03:26,731 - 127.0.0.1 - - [06/Jul/2025 19:03:26] "[33mPOST /ask_ai HTTP/1.1[0m" 404 -
+2025-07-06 19:09:28,899 - 127.0.0.1 - - [06/Jul/2025 19:09:28] "GET / HTTP/1.1" 200 -
+2025-07-06 19:09:28,920 - 127.0.0.1 - - [06/Jul/2025 19:09:28] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2025-07-06 19:09:29,169 - 127.0.0.1 - - [06/Jul/2025 19:09:29] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-07-06 19:09:45,083 - 127.0.0.1 - - [06/Jul/2025 19:09:45] "[33mPOST /ask_ai HTTP/1.1[0m" 404 -
+2025-07-06 19:09:48,713 - 127.0.0.1 - - [06/Jul/2025 19:09:48] "GET / HTTP/1.1" 200 -
+2025-07-06 19:09:49,031 - 127.0.0.1 - - [06/Jul/2025 19:09:49] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2025-07-06 19:09:49,033 - 127.0.0.1 - - [06/Jul/2025 19:09:49] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-07-06 19:09:59,728 - 127.0.0.1 - - [06/Jul/2025 19:09:59] "[33mPOST /ask_ai HTTP/1.1[0m" 404 -
+2025-07-06 19:16:05,487 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-07-06 19:16:05,488 - [33mPress CTRL+C to quit[0m
+2025-07-06 19:16:18,202 - 127.0.0.1 - - [06/Jul/2025 19:16:18] "GET / HTTP/1.1" 200 -
+2025-07-06 19:16:18,914 - 127.0.0.1 - - [06/Jul/2025 19:16:18] "GET /static/js/main.js HTTP/1.1" 200 -
+2025-07-06 19:16:18,934 - 127.0.0.1 - - [06/Jul/2025 19:16:18] "GET /static/css/styles.css HTTP/1.1" 200 -
+2025-07-06 19:16:30,556 - 127.0.0.1 - - [06/Jul/2025 19:16:30] "POST /start HTTP/1.1" 200 -
+2025-07-06 19:17:04,452 - 127.0.0.1 - - [06/Jul/2025 19:17:04] "POST /symptom HTTP/1.1" 200 -
+2025-07-06 19:17:04,498 - 127.0.0.1 - - [06/Jul/2025 19:17:04] "POST /symptom HTTP/1.1" 200 -
+2025-07-06 19:17:05,616 - 127.0.0.1 - - [06/Jul/2025 19:17:05] "POST /symptom HTTP/1.1" 200 -
+2025-07-06 19:17:28,479 - 127.0.0.1 - - [06/Jul/2025 19:17:28] "POST /symptom HTTP/1.1" 200 -
+2025-07-06 19:17:56,641 - Could not get image data from src attribute: /static/img/logo.jpg
+'<img src="/static/img/logo.jpg" alt="Meddy Logo" class="logo"/>'
+2025-07-06 19:17:56,674 - Could not get image data from src attribute: /static/img/logo.jpg
+'<img src="/static/img/logo.jpg" alt="Meddy Logo" class="logo"/>'
+2025-07-06 19:17:56,758 - 127.0.0.1 - - [06/Jul/2025 19:17:56] "GET /download_pdf HTTP/1.1" 200 -
+2025-07-06 19:17:56,758 - 127.0.0.1 - - [06/Jul/2025 19:17:56] "GET /download_pdf HTTP/1.1" 200 -
+2025-07-06 20:48:41,799 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-07-06 20:48:41,821 - [33mPress CTRL+C to quit[0m
+2025-07-06 20:48:53,674 - 127.0.0.1 - - [06/Jul/2025 20:48:53] "GET / HTTP/1.1" 200 -
+2025-07-06 20:48:53,906 - 127.0.0.1 - - [06/Jul/2025 20:48:53] "GET /static/css/styles.css HTTP/1.1" 200 -
+2025-07-06 20:48:53,911 - 127.0.0.1 - - [06/Jul/2025 20:48:53] "GET /static/js/main.js HTTP/1.1" 200 -
+2025-07-06 20:48:55,625 - 127.0.0.1 - - [06/Jul/2025 20:48:55] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-07-06 20:49:19,395 - 127.0.0.1 - - [06/Jul/2025 20:49:19] "POST /ask_ai HTTP/1.1" 200 -
+2025-07-06 20:53:13,133 - 127.0.0.1 - - [06/Jul/2025 20:53:13] "GET / HTTP/1.1" 200 -
+2025-07-06 20:53:13,149 - 127.0.0.1 - - [06/Jul/2025 20:53:13] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2025-07-06 20:53:13,153 - 127.0.0.1 - - [06/Jul/2025 20:53:13] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-07-06 20:53:38,421 - 127.0.0.1 - - [06/Jul/2025 20:53:38] "POST /ask_ai HTTP/1.1" 200 -

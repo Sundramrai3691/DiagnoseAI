@@ -1,0 +1,12 @@
+Flask
+torch
+pandas
+numpy
+requests
+nltk
+fpdf
+xhtml2pdf
+textblob
+symspellpy
+rapidfuzz
+python-dotenv

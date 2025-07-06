@@ -1,0 +1,18 @@
+# Python
+venv/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+
+# Environment variables
+.env
+
+# Reports and generated files
+*.pdf
+/static/reports/
+
+# OS-specific files
+.DS_Store
+Thumbs.db
