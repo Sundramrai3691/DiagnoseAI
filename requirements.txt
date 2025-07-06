@@ -10,3 +10,5 @@ textblob
 symspellpy
 rapidfuzz
 python-dotenv
+gunicorn
+
