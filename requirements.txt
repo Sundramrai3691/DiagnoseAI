@@ -11,4 +11,4 @@ symspellpy
 rapidfuzz
 python-dotenv
 gunicorn
-
+scikit-learn
