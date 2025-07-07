@@ -1,5 +1,5 @@
 Flask==2.3.3
-torch==2.0.1
+torch==2.0.1+cpu
 pandas==1.5.3
 numpy==1.23.5
 requests==2.31.0
