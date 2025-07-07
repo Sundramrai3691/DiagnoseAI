@@ -1,54 +1,36 @@
-# MEDICAL CHATBOT
+# DiagnoseAI
 
+DiagnoseAI is a Flask-based web application that provides intelligent health diagnostics using NLP and machine learning models.
 
-## Requirements
+## Features
 
-Python 3.5 or newer.
+- Symptom analysis and diagnosis suggestion
+- Medical chatbot for general health queries
+- PDF report generation
+- Spell correction and semantic similarity for improved query handling
 
-Dependencies:
+## Tech Stack
 
-- Flask
-- PyTorch
-- NLTK
-- NumPy
-- Scikit-learn
-- Pandas
-- matplotlib
+- Python (Flask)
+- Hugging Face Transformers
+- PyTorch (CPU)
+- Pandas, NumPy, Scikit-learn
+- Gunicorn (for deployment)
 
-## Install requirements
+## Installation
 
-Before running the application you need to install the dependencies. We recommend to use the virtual environment
-[virtualenv](https://pypi.org/project/virtualenv/) for this.
+1. Clone the repository:
+   
+git clone https://github.com/Sundramrai3691/DiagnoseAI.git
+cd DiagnoseAI
 
-Linux:
+2. Install dependencies:
+   
+3. Set environment variables:
+- Create a `.env` file and add your keys:
+  ```
+  HUGGINGFACE_API_KEY=your_api_key_here
+  ```
 
-```
-python3 -m venv venv
-venv/bin/activate
-pip install flask torch nltk numpy sklearn pandas matplotlib
-```
-Windows:
-
-```
-py -3 -m venv venv
-venv\Scripts\activate
-pip install flask torch nltk numpy==1.19.3 sklearn pandas matplotlib
-```
-
-
-
-In order for _nltk_ tokenization to work, the _'punkt'_ package must be downloaded. To do this, simply enter the Python shell and run the following:
-
-```python
-import nltk
-nltk.download('punkt')
-```
-
-This will install all the required dependencies needed to run the application successfully.
-
-## Run
-
-To run MedicalChatbot, `cd` into MedicalChatbot repo on your computer and run `python -m flask run`. This will run the Flask 
-server in development mode on localhost, port 5000.
-
-`* Running on http://127.0.0.1:5000/ (Press CTRL+C to quit)`
+4. Run the application:
+gunicorn app:app
