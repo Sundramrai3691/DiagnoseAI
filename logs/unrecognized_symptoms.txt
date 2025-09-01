@@ -343,3 +343,87 @@ Traceback (most recent call last):
     raise TTFError('Can\'t open file "%s"' % fn)
 reportlab.pdfbase.ttfonts.TTFError: Can't open file "C:\Users\SUNDRA~1\AppData\Local\Temp\tmp3cop5h47"
 2025-09-01 21:54:40,280 - 127.0.0.1 - - [01/Sep/2025 21:54:40] "[35m[1mGET /download_pdf HTTP/1.1[0m" 500 -
+2025-09-01 22:03:11,358 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on http://127.0.0.1:5000
+2025-09-01 22:03:11,358 - [33mPress CTRL+C to quit[0m
+2025-09-01 22:03:17,209 - 127.0.0.1 - - [01/Sep/2025 22:03:17] "GET / HTTP/1.1" 200 -
+2025-09-01 22:03:17,325 - 127.0.0.1 - - [01/Sep/2025 22:03:17] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2025-09-01 22:03:17,330 - 127.0.0.1 - - [01/Sep/2025 22:03:17] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-01 22:03:29,516 - 127.0.0.1 - - [01/Sep/2025 22:03:29] "POST /start HTTP/1.1" 200 -
+2025-09-01 22:03:42,080 - 127.0.0.1 - - [01/Sep/2025 22:03:42] "POST /symptom HTTP/1.1" 200 -
+2025-09-01 22:03:42,145 - 127.0.0.1 - - [01/Sep/2025 22:03:42] "POST /symptom HTTP/1.1" 200 -
+2025-09-01 22:03:42,261 - 127.0.0.1 - - [01/Sep/2025 22:03:42] "POST /symptom HTTP/1.1" 200 -
+2025-09-01 22:03:42,362 - 127.0.0.1 - - [01/Sep/2025 22:03:42] "POST /symptom HTTP/1.1" 200 -
+2025-09-01 22:03:54,941 - 127.0.0.1 - - [01/Sep/2025 22:03:54] "POST /symptom HTTP/1.1" 200 -
+2025-09-01 22:04:04,793 - @fontface, unknown value font-weight '300'
+
+2025-09-01 22:04:07,009 - Error while parsing CSS file
+Traceback (most recent call last):
+  File "C:\Users\Sundram Rai\DiagnoseAI\.venv\lib\site-packages\reportlab\lib\utils.py", line 523, in open_for_read
+    return open_for_read_by_name(name,mode)
+  File "C:\Users\Sundram Rai\DiagnoseAI\.venv\lib\site-packages\reportlab\lib\utils.py", line 463, in open_for_read_by_name
+    return open(name,mode)
+PermissionError: [Errno 13] Permission denied: 'C:\\Users\\SUNDRA~1\\AppData\\Local\\Temp\\tmpsamtajxj'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Sundram Rai\DiagnoseAI\.venv\lib\site-packages\reportlab\lib\utils.py", line 530, in open_for_read
+    return BytesIO((datareader if name[:5].lower()=='data:' else rlUrlRead)(name))
+  File "C:\Users\Sundram Rai\DiagnoseAI\.venv\lib\site-packages\reportlab\lib\utils.py", line 476, in rlUrlRead
+    return urlopen(name).read()
+  File "C:\Users\Sundram Rai\AppData\Local\Programs\Python\Python310\lib\urllib\request.py", line 216, in urlopen
+    return opener.open(url, data, timeout)
+  File "C:\Users\Sundram Rai\AppData\Local\Programs\Python\Python310\lib\urllib\request.py", line 519, in open
+    response = self._open(req, data)
+  File "C:\Users\Sundram Rai\AppData\Local\Programs\Python\Python310\lib\urllib\request.py", line 541, in _open
+    return self._call_chain(self.handle_open, 'unknown',
+  File "C:\Users\Sundram Rai\AppData\Local\Programs\Python\Python310\lib\urllib\request.py", line 496, in _call_chain
+    result = func(*args)
+  File "C:\Users\Sundram Rai\AppData\Local\Programs\Python\Python310\lib\urllib\request.py", line 1419, in unknown_open
+    raise URLError('unknown url type: %s' % type)
+urllib.error.URLError: <urlopen error unknown url type: c>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Sundram Rai\DiagnoseAI\.venv\lib\site-packages\reportlab\pdfbase\ttfonts.py", line 159, in TTFOpenFile
+    f = open_for_read(fn,'rb')
+  File "C:\Users\Sundram Rai\DiagnoseAI\.venv\lib\site-packages\reportlab\lib\utils.py", line 534, in open_for_read
+    return open_for_read(name,mode)
+  File "C:\Users\Sundram Rai\DiagnoseAI\.venv\lib\site-packages\reportlab\lib\utils.py", line 532, in open_for_read
+    raise IOError('Cannot open resource "%s"' % name)
+OSError: Cannot open resource "C:\Users\SUNDRA~1\AppData\Local\Temp\tmpsamtajxj"
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Sundram Rai\DiagnoseAI\.venv\lib\site-packages\xhtml2pdf\context.py", line 519, in parseExternal
+    result = self.parse(cssFile.getData())
+  File "C:\Users\Sundram Rai\DiagnoseAI\.venv\lib\site-packages\xhtml2pdf\w3c\cssParser.py", line 458, in parse
+    src, stylesheet = self._parseStylesheet(src)
+  File "C:\Users\Sundram Rai\DiagnoseAI\.venv\lib\site-packages\xhtml2pdf\w3c\cssParser.py", line 561, in _parseStylesheet
+    src, atResults = self._parseAtKeyword(src)
+  File "C:\Users\Sundram Rai\DiagnoseAI\.venv\lib\site-packages\xhtml2pdf\w3c\cssParser.py", line 685, in _parseAtKeyword
+    src, result = self._parseAtFontFace(src)
+  File "C:\Users\Sundram Rai\DiagnoseAI\.venv\lib\site-packages\xhtml2pdf\w3c\cssParser.py", line 866, in _parseAtFontFace
+    result = [self.cssBuilder.atFontFace(properties)]
+  File "C:\Users\Sundram Rai\DiagnoseAI\.venv\lib\site-packages\xhtml2pdf\context.py", line 221, in atFontFace
+    self.c.loadFont(names, src, bold=bold, italic=italic)
+  File "C:\Users\Sundram Rai\DiagnoseAI\.venv\lib\site-packages\xhtml2pdf\context.py", line 1116, in loadFont
+    file = TTFont(fullFontName, filename)
+  File "C:\Users\Sundram Rai\DiagnoseAI\.venv\lib\site-packages\reportlab\pdfbase\ttfonts.py", line 1207, in __init__
+    self.face = TTFontFace(filename, validate=validate, subfontIndex=subfontIndex)
+  File "C:\Users\Sundram Rai\DiagnoseAI\.venv\lib\site-packages\reportlab\pdfbase\ttfonts.py", line 1088, in __init__
+    TTFontFile.__init__(self, filename, validate=validate, subfontIndex=subfontIndex)
+  File "C:\Users\Sundram Rai\DiagnoseAI\.venv\lib\site-packages\reportlab\pdfbase\ttfonts.py", line 447, in __init__
+    TTFontParser.__init__(self, file, validate=validate,subfontIndex=subfontIndex)
+  File "C:\Users\Sundram Rai\DiagnoseAI\.venv\lib\site-packages\reportlab\pdfbase\ttfonts.py", line 183, in __init__
+    self.readFile(file)
+  File "C:\Users\Sundram Rai\DiagnoseAI\.venv\lib\site-packages\reportlab\pdfbase\ttfonts.py", line 259, in readFile
+    self.filename, f = TTFOpenFile(f)
+  File "C:\Users\Sundram Rai\DiagnoseAI\.venv\lib\site-packages\reportlab\pdfbase\ttfonts.py", line 169, in TTFOpenFile
+    raise TTFError('Can\'t open file "%s"' % fn)
+reportlab.pdfbase.ttfonts.TTFError: Can't open file "C:\Users\SUNDRA~1\AppData\Local\Temp\tmpsamtajxj"
+2025-09-01 22:04:07,369 - 127.0.0.1 - - [01/Sep/2025 22:04:07] "GET /download_pdf HTTP/1.1" 200 -
+2025-09-01 22:04:53,630 - 127.0.0.1 - - [01/Sep/2025 22:04:53] "POST /ask_ai HTTP/1.1" 200 -

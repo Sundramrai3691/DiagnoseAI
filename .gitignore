@@ -1,18 +1,33 @@
+# ======================
 # Python
+# ======================
 venv/
+.venv/
 __pycache__/
 *.pyc
 *.pyo
 *.pyd
 *.log
 
+# ======================
 # Environment variables
+# ======================
 .env
 
+# ======================
 # Reports and generated files
+# ======================
 *.pdf
 /static/reports/
 
+# ======================
+# IDE / Editor
+# ======================
+.vscode/
+.idea/
+
+# ======================
 # OS-specific files
+# ======================
 .DS_Store
 Thumbs.db
