@@ -53,48 +53,48 @@ $(document).ready(function () {
   function setupEventListeners() {
     // User details submission
     submitDetailsBtn.on("click", handleUserDetailsSubmit);
-    
+
     // Chat functionality
     sendBtn.on("click", sendMessage);
     input.on("keypress", handleInputKeypress);
     input.on("input", debounce(handleInputChange, 300));
-    
+
     // Autocomplete
     dataList.on("click", "li", handleSymptomSelect);
     input.on("blur", () => setTimeout(() => suggestionBox.slideUp(200), 150));
-    
+
     // AI chat
     askAIBtn.on("click", handleAIQuestion);
     askAIInput.on("keypress", (e) => {
       if (e.which === 13) handleAIQuestion();
     });
-    
+
     // PDF download
     downloadBtn.on("click", handlePDFDownload);
-    
+
     // Chat toggle
     chatToggle.on("click", toggleChatWindow);
   }
 
   function setupDarkMode() {
     const darkModeBtn = $("#toggle-dark");
-    const isDarkMode = localStorage.getItem('darkMode') === 'true';
-    
+    const isDarkMode = localStorage.getItem("darkMode") === "true";
+
     if (isDarkMode) {
-      document.body.classList.add('dark-mode');
+      document.body.classList.add("dark-mode");
     }
-    
+
     darkModeBtn.on("click", () => {
       document.body.classList.toggle("dark-mode");
-      const isNowDark = document.body.classList.contains('dark-mode');
-      localStorage.setItem('darkMode', isNowDark);
+      const isNowDark = document.body.classList.contains("dark-mode");
+      localStorage.setItem("darkMode", isNowDark);
     });
   }
 
   function autoResizeTextarea() {
-    input.on('input', function() {
-      this.style.height = 'auto';
-      this.style.height = Math.min(this.scrollHeight, 120) + 'px';
+    input.on("input", function () {
+      this.style.height = "auto";
+      this.style.height = Math.min(this.scrollHeight, 120) + "px";
     });
   }
 
@@ -116,7 +116,7 @@ $(document).ready(function () {
       success: function (response) {
         userDetailsCard.slideUp(400, () => {
           chatContainer.slideDown(400);
-          appendBotMessage(`Hi <strong>${name}</strong>! I'm <strong>Meddy</strong>, your AI health assistant.<br>
+          appendBotMessage(`Hi <strong>${name}</strong>! I'm <strong>DiagnoseAI</strong>, your AI health assistant.<br>
             Please describe your symptoms (e.g., "fever, cough, headache").<br>
             When you're finished, type <strong>"done"</strong>.`);
           askAISection.slideDown(400);
@@ -127,7 +127,7 @@ $(document).ready(function () {
       },
       complete: function () {
         setButtonLoading(submitDetailsBtn, false);
-      }
+      },
     });
   }
 
@@ -137,19 +137,19 @@ $(document).ready(function () {
       nameInput.focus();
       return false;
     }
-    
+
     if (!age || isNaN(age) || age <= 0 || age > 120) {
       showError("Please enter a valid age between 1 and 120.");
       ageInput.focus();
       return false;
     }
-    
+
     if (!gender) {
       showError("Please select your gender.");
       genderInput.focus();
       return false;
     }
-    
+
     return true;
   }
 
@@ -167,11 +167,11 @@ $(document).ready(function () {
 
     if (value.length > 1) {
       const filtered = symptoms
-        .filter(s => s.toLowerCase().includes(value))
+        .filter((s) => s.toLowerCase().includes(value))
         .slice(0, 8);
-        
+
       if (filtered.length) {
-        filtered.forEach(symptom => {
+        filtered.forEach((symptom) => {
           dataList.append(`<li data-symptom="${symptom}">${symptom}</li>`);
         });
         suggestionBox.slideDown(200);
@@ -184,7 +184,7 @@ $(document).ready(function () {
   }
 
   function handleSymptomSelect() {
-    const symptom = $(this).data('symptom') || $(this).text();
+    const symptom = $(this).data("symptom") || $(this).text();
     input.val(symptom);
     suggestionBox.slideUp(200);
     input.focus();
@@ -196,7 +196,7 @@ $(document).ready(function () {
     if (!text || isProcessing) return;
 
     appendUserMessage(text);
-    input.val("").trigger('input'); // Reset height
+    input.val("").trigger("input"); // Reset height
     showTyping();
     setProcessing(true);
 
@@ -208,9 +208,11 @@ $(document).ready(function () {
   }
 
   function isGeneralHealthQuery(text) {
-    const generalKeywords = /\b(what|how|why|can|should|could|will|do you think|meddy|advice|recommend|suggest|tell me about)\b/i;
-    const symptomKeywords = /\b(pain|hurt|ache|fever|cough|nausea|tired|dizzy|done)\b/i;
-    
+    const generalKeywords =
+      /\b(what|how|why|can|should|could|will|do you think|DiagnoseAI|advice|recommend|suggest|tell me about)\b/i;
+    const symptomKeywords =
+      /\b(pain|hurt|ache|fever|cough|nausea|tired|dizzy|done)\b/i;
+
     return generalKeywords.test(text) && !symptomKeywords.test(text);
   }
 
@@ -222,21 +224,27 @@ $(document).ready(function () {
       data: JSON.stringify({ message: text }),
       success: function (response) {
         hideTyping();
-        appendBotMessage(response.reply || "🤖 I couldn't process that question. Please try rephrasing.");
+        appendBotMessage(
+          response.reply ||
+            "🤖 I couldn't process that question. Please try rephrasing."
+        );
       },
       error: function () {
         hideTyping();
-        appendBotMessage("⚠️ I'm having trouble connecting right now. Please try again in a moment.");
+        appendBotMessage(
+          "⚠️ I'm having trouble connecting right now. Please try again in a moment."
+        );
       },
       complete: function () {
         setProcessing(false);
-      }
+      },
     });
   }
 
   function handleSymptomInput(text) {
-    const symptoms = text.split(/[,]|and|then/gi)
-      .map(s => s.trim())
+    const symptoms = text
+      .split(/[,]|and|then/gi)
+      .map((s) => s.trim())
       .filter(Boolean);
 
     processSymptoms(symptoms, 0);
@@ -250,7 +258,7 @@ $(document).ready(function () {
     }
 
     const symptom = symptomList[index];
-    
+
     $.ajax({
       url: "/symptom",
       method: "POST",
@@ -270,7 +278,7 @@ $(document).ready(function () {
       error: function () {
         appendBotMessage("⚠️ Something went wrong processing that symptom.");
         processSymptoms(symptomList, index + 1);
-      }
+      },
     });
   }
 
@@ -280,16 +288,20 @@ $(document).ready(function () {
     if (!question) return;
 
     setButtonLoading(askAIBtn, true);
-    aiReplyDiv.html(`
+    aiReplyDiv
+      .html(
+        `
       <div class="typing-indicator">
-        <span>Meddy is thinking</span>
+        <span>DiagnoseAI is thinking</span>
         <div class="typing-dots">
           <span></span>
           <span></span>
           <span></span>
         </div>
       </div>
-    `).show();
+    `
+      )
+      .show();
 
     $.ajax({
       url: "/ask_ai",
@@ -297,15 +309,21 @@ $(document).ready(function () {
       contentType: "application/json",
       data: JSON.stringify({ message: question }),
       success: function (response) {
-        aiReplyDiv.html(`<strong>Meddy:</strong> ${response.reply || "I couldn't process that question."}`);
+        aiReplyDiv.html(
+          `<strong>DiagnoseAI:</strong> ${
+            response.reply || "I couldn't process that question."
+          }`
+        );
         askAIInput.val("");
       },
       error: function () {
-        aiReplyDiv.html("⚠️ I'm having trouble connecting right now. Please try again.");
+        aiReplyDiv.html(
+          "⚠️ I'm having trouble connecting right now. Please try again."
+        );
       },
       complete: function () {
         setButtonLoading(askAIBtn, false);
-      }
+      },
     });
   }
 
@@ -330,11 +348,15 @@ $(document).ready(function () {
 
         <div class="symptoms-section">
           <h4 style="margin-bottom: 1rem; font-weight: 600;">Analyzed Symptoms</h4>
-          ${results.map(r => `
+          ${results
+            .map(
+              (r) => `
             <div class="symptom-item">
               <span class="symptom-name">${r.symptom}</span>
               <div class="symptom-meta">
-                <span class="confidence-badge ${getConfidenceClass(r.confidence)}">
+                <span class="confidence-badge ${getConfidenceClass(
+                  r.confidence
+                )}">
                   ${(r.confidence * 100).toFixed(1)}% confidence
                 </span>
                 <span class="severity-badge ${getSeverityClass(r.severity)}">
@@ -342,7 +364,9 @@ $(document).ready(function () {
                 </span>
               </div>
             </div>
-          `).join('')}
+          `
+            )
+            .join("")}
         </div>
 
         <div class="precautions-section">
@@ -353,7 +377,9 @@ $(document).ready(function () {
             Recommended Precautions
           </h4>
           <div class="precautions-list">
-            ${result.precautions.map(precaution => `
+            ${result.precautions
+              .map(
+                (precaution) => `
               <div class="precaution-item">
                 <svg class="precaution-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                   <polyline points="9,11 12,14 22,4"/>
@@ -361,7 +387,9 @@ $(document).ready(function () {
                 </svg>
                 <span>${precaution}</span>
               </div>
-            `).join('')}
+            `
+              )
+              .join("")}
           </div>
         </div>
 
@@ -374,29 +402,32 @@ $(document).ready(function () {
     `;
 
     $("#diagnosis-results").html(diagnosisHtml).hide().slideDown(600);
-    
+
     // Scroll to results
-    $("html, body").animate({
-      scrollTop: $("#diagnosis-results").offset().top - 100
-    }, 800);
+    $("html, body").animate(
+      {
+        scrollTop: $("#diagnosis-results").offset().top - 100,
+      },
+      800
+    );
   }
 
   function getConfidenceClass(confidence) {
-    if (confidence >= 0.8) return 'confidence-high';
-    if (confidence >= 0.6) return 'confidence-medium';
-    return 'confidence-low';
+    if (confidence >= 0.8) return "confidence-high";
+    if (confidence >= 0.6) return "confidence-medium";
+    return "confidence-low";
   }
 
   function getSeverityClass(severity) {
-    if (severity >= 6) return 'severity-high';
-    if (severity >= 4) return 'severity-medium';
-    return 'severity-low';
+    if (severity >= 6) return "severity-high";
+    if (severity >= 4) return "severity-medium";
+    return "severity-low";
   }
 
   function getSeverityIcon(severity) {
-    if (severity >= 6) return '🔴';
-    if (severity >= 4) return '🟡';
-    return '🟢';
+    if (severity >= 6) return "🔴";
+    if (severity >= 4) return "🟡";
+    return "🟢";
   }
 
   // Message Display Functions
@@ -415,7 +446,7 @@ $(document).ready(function () {
   function showTyping() {
     typingDiv = $(`
       <div class="message bot-message typing-indicator">
-        <span>Meddy is analyzing</span>
+        <span>DiagnoseAI is analyzing</span>
         <div class="typing-dots">
           <span></span>
           <span></span>
@@ -429,7 +460,7 @@ $(document).ready(function () {
 
   function hideTyping() {
     if (typingDiv) {
-      typingDiv.fadeOut(200, function() {
+      typingDiv.fadeOut(200, function () {
         $(this).remove();
       });
       typingDiv = null;
@@ -443,23 +474,23 @@ $(document).ready(function () {
   // Utility Functions
   function setButtonLoading(button, loading) {
     if (loading) {
-      button.addClass('loading').prop('disabled', true);
-      if (!button.data('original-text')) {
-        button.data('original-text', button.html());
+      button.addClass("loading").prop("disabled", true);
+      if (!button.data("original-text")) {
+        button.data("original-text", button.html());
       }
-      button.html('Processing...');
+      button.html("Processing...");
     } else {
-      button.removeClass('loading').prop('disabled', false);
-      if (button.data('original-text')) {
-        button.html(button.data('original-text'));
+      button.removeClass("loading").prop("disabled", false);
+      if (button.data("original-text")) {
+        button.html(button.data("original-text"));
       }
     }
   }
 
   function setProcessing(processing) {
     isProcessing = processing;
-    sendBtn.prop('disabled', processing);
-    
+    sendBtn.prop("disabled", processing);
+
     if (processing) {
       spinner.show();
     } else {
@@ -487,13 +518,13 @@ $(document).ready(function () {
         ${message}
       </div>
     `);
-    
+
     // Insert after user details card
     userDetailsCard.after(errorDiv);
-    
+
     // Remove after 5 seconds
     setTimeout(() => {
-      errorDiv.fadeOut(300, function() {
+      errorDiv.fadeOut(300, function () {
         $(this).remove();
       });
     }, 5000);
@@ -502,7 +533,7 @@ $(document).ready(function () {
   // PDF Download
   function handlePDFDownload() {
     setButtonLoading(downloadBtn, true);
-    
+
     // Simulate download delay for UX
     setTimeout(() => {
       setButtonLoading(downloadBtn, false);
@@ -523,7 +554,7 @@ $(document).ready(function () {
     const chatWindowHtml = `
       <div class="chat-window">
         <div class="chat-header">
-          <h4 style="margin: 0; font-weight: 600;">Chat with Meddy</h4>
+          <h4 style="margin: 0; font-weight: 600;">Chat with DiagnoseAI</h4>
           <button class="chat-close" aria-label="Close chat">×</button>
         </div>
         <div class="chat-body" style="flex: 1; padding: 1rem;">
@@ -535,17 +566,19 @@ $(document).ready(function () {
         </div>
       </div>
     `;
-    
+
     $("body").append(chatWindowHtml);
-    
+
     // Setup chat window events
     $(".chat-close").on("click", () => $(".chat-window").hide());
   }
 
   // Voice Recognition
   function setupVoiceRecognition() {
-    if (!('webkitSpeechRecognition' in window)) {
-      micBtn.prop("disabled", true).attr("title", "Speech recognition not supported in this browser");
+    if (!("webkitSpeechRecognition" in window)) {
+      micBtn
+        .prop("disabled", true)
+        .attr("title", "Speech recognition not supported in this browser");
       return;
     }
 
@@ -556,7 +589,7 @@ $(document).ready(function () {
 
     micBtn.on("click", function () {
       if (isProcessing) return;
-      
+
       recognition.start();
       setButtonLoading(micBtn, true);
       micBtn.html(`
@@ -569,7 +602,7 @@ $(document).ready(function () {
 
     recognition.onresult = function (event) {
       const transcript = event.results[0][0].transcript;
-      input.val(transcript).trigger('input');
+      input.val(transcript).trigger("input");
       resetMicButton();
     };
 
@@ -597,18 +630,21 @@ $(document).ready(function () {
   }
 
   // Smooth scrolling for anchor links
-  $('a[href^="#"]').on('click', function(e) {
+  $('a[href^="#"]').on("click", function (e) {
     e.preventDefault();
-    const target = $($(this).attr('href'));
+    const target = $($(this).attr("href"));
     if (target.length) {
-      $('html, body').animate({
-        scrollTop: target.offset().top - 100
-      }, 800);
+      $("html, body").animate(
+        {
+          scrollTop: target.offset().top - 100,
+        },
+        800
+      );
     }
   });
 
   // Show chat toggle after user starts assessment
-  submitDetailsBtn.on('click', function() {
+  submitDetailsBtn.on("click", function () {
     setTimeout(() => {
       chatToggle.fadeIn(400);
     }, 1000);

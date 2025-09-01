@@ -242,18 +242,26 @@ def download_report():
 @app.route("/download_pdf")
 def download_pdf():
     pdf_html = render_template("report.html", data=session.get("report_data", {}))
+
+    # ✅ Replace CSS variables with actual hex values
+    pdf_html = pdf_html.replace("var(--border)", "#000000")      # black
+    pdf_html = pdf_html.replace("var(--text)", "#333333")        # dark gray
+    pdf_html = pdf_html.replace("var(--background)", "#ffffff")  # white
+
     pdf = BytesIO()
     pisa_status = pisa.CreatePDF(pdf_html, dest=pdf)
     if pisa_status.err:
         return "PDF generation failed", 500
+
     pdf.seek(0)
     response = make_response(pdf.read())
     response.headers['Content-Type'] = 'application/pdf'
-    response.headers['Content-Disposition'] = 'attachment; filename=meddy_report.pdf'
+    response.headers['Content-Disposition'] = 'attachment; filename=DiagnoseAI_report.pdf'
     return response
 
-# 🤖 Ask Meddy Anything Route
-# 🤖 Ask Meddy Anything Route
+
+# 🤖 Ask DiagnoseAI Anything Route
+# 🤖 Ask DiagnoseAI Anything Route
 @app.route("/ask_ai", methods=["POST"])
 def ask_ai():
     data = request.get_json()
@@ -300,5 +308,5 @@ def ask_ai():
 
 # 🚀 Run Server
 if __name__ == "__main__":
-    print(f"🚀 DiagnoseAI Meddy running at: http://127.0.0.1:5000")
+    print(f"🚀 DiagnoseAI DiagnoseAI running at: http://127.0.0.1:5000")
     app.run(debug=True, host="127.0.0.1", port=5000, use_reloader=False)

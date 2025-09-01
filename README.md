@@ -1,11 +1,11 @@
 # DiagnoseAI
 
-DiagnoseAI is a modern Flask-based web application that provides intelligent health diagnostics using advanced NLP and machine learning models. The application features a clean, minimalist interface with an AI assistant named "Meddy" for personalized health assessments.
+DiagnoseAI is a modern Flask-based web application that provides intelligent health diagnostics using advanced NLP and machine learning models. The application features a clean, minimalist interface with an AI assistant named "DiagnoseAI" for personalized health assessments.
 
 ## ✨ Features
 
 - **Smart Symptom Analysis**: Advanced ML models analyze symptoms for accurate diagnosis suggestions
-- **Interactive AI Chat**: Conversational interface with Meddy for general health queries
+- **Interactive AI Chat**: Conversational interface with DiagnoseAI for general health queries
 - **PDF Report Generation**: Comprehensive medical reports for healthcare professionals
 - **Modern UI**: Clean, responsive design with accessibility features
 - **Voice Input**: Speech recognition for hands-free symptom input
@@ -14,6 +14,7 @@ DiagnoseAI is a modern Flask-based web application that provides intelligent hea
 ## 🎨 UI Design (2025 Update)
 
 The application now features a modern, minimalist design with:
+
 - **Design System**: CSS custom properties for consistent theming
 - **Typography**: Inter font family with proper font weights
 - **Responsive Layout**: Mobile-first design that works on all devices
@@ -32,36 +33,42 @@ The application now features a modern, minimalist design with:
 ## 🚀 Quick Start
 
 ### Prerequisites
+
 - Python 3.11+
 - pip package manager
 
 ### Installation
 
 1. **Clone the repository:**
+
    ```bash
    git clone https://github.com/Sundramrai3691/DiagnoseAI.git
    cd DiagnoseAI
    ```
 
 2. **Install dependencies:**
+
    ```bash
    pip install -r requirements.txt
    ```
 
 3. **Set up environment variables:**
    Create a `.env` file in the root directory:
+
    ```env
    HUGGINGFACE_API_KEY=your_api_key_here
    ```
 
 4. **Run the application:**
-   
+
    **Development:**
+
    ```bash
    python app.py
    ```
-   
+
    **Production:**
+
    ```bash
    gunicorn app:app
    ```
@@ -104,6 +111,7 @@ DiagnoseAI/
 ## 🎯 Key Features Explained
 
 ### Symptom Analysis Pipeline
+
 1. **Input Processing**: Natural language processing with spell correction
 2. **Feature Extraction**: Bag-of-words model with stemming
 3. **Classification**: Neural network predicts symptom categories
@@ -111,11 +119,13 @@ DiagnoseAI/
 5. **Confidence Scoring**: Provides reliability metrics for each prediction
 
 ### AI Chat Assistant
+
 - Powered by Hugging Face's FLAN-T5 model
 - Handles general health queries and lifestyle advice
 - Contextual responses based on medical knowledge
 
 ### Report Generation
+
 - Comprehensive PDF reports with patient information
 - Diagnosis summary with confidence scores
 - Recommended precautions and next steps
@@ -124,25 +134,31 @@ DiagnoseAI/
 ## 🔧 Configuration
 
 ### Environment Variables
+
 - `HUGGINGFACE_API_KEY`: Required for AI chat functionality
 - `FLASK_ENV`: Set to `development` for debug mode
 
 ### Model Files
+
 The application requires pre-trained models in the `models/` directory:
+
 - `data.pth`: Neural network weights and vocabulary
 - `fitted_model.pickle2`: Disease prediction model
 
 ## 🚀 Deployment
 
 ### Heroku
+
 ```bash
 git push heroku main
 ```
 
 ### Render
+
 The included `render.yaml` configures automatic deployment.
 
 ### Docker
+
 ```bash
 docker build -t diagnoseai .
 docker run -p 5000:5000 diagnoseai
@@ -151,6 +167,7 @@ docker run -p 5000:5000 diagnoseai
 ## 🧪 Testing
 
 ### Manual Verification Checklist
+
 - [ ] App starts with `python app.py` or `gunicorn app:app`
 - [ ] User registration and symptom submission works
 - [ ] Diagnosis results display correctly with new UI
@@ -163,6 +180,7 @@ docker run -p 5000:5000 diagnoseai
 - [ ] No console errors or broken static assets
 
 ### Browser Compatibility
+
 - Chrome/Edge 90+
 - Firefox 88+
 - Safari 14+
@@ -183,6 +201,7 @@ This project is licensed under the MIT License - see the [LICENSE](LICENSE) file
 ## 👨‍💻 Author
 
 **Sundram Rai**
+
 - GitHub: [@Sundramrai3691](https://github.com/Sundramrai3691)
 
 ## 🙏 Acknowledgments
