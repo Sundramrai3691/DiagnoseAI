@@ -1,121 +1,407 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Medical Report - Meddy</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Medical Report - DiagnoseAI</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
   <style>
+    :root {
+      --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      --text: #0f172a;
+      --muted: #64748b;
+      --accent: #2563eb;
+      --border: #e2e8f0;
+      --bg: #ffffff;
+      --radius: 8px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
     body {
-      font-family: Arial, sans-serif;
-      margin: 40px;
-      color: #000;
+      font-family: var(--font-sans);
+      line-height: 1.6;
+      color: var(--text);
+      background: var(--bg);
+      margin: 0;
+      padding: 2rem;
+      font-size: 14px;
     }
 
-    .header {
+    .report-container {
+      max-width: 800px;
+      margin: 0 auto;
+      background: white;
+      border-radius: var(--radius);
+      overflow: hidden;
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+
+    .report-header {
+      background: linear-gradient(135deg, var(--accent) 0%, #06b6d4 100%);
+      color: white;
+      padding: 2rem;
       text-align: center;
-      border-bottom: 2px solid #444;
-      padding-bottom: 10px;
-      margin-bottom: 30px;
+      position: relative;
     }
 
-    .logo {
-      width: 70px;
-      height: 70px;
+    .report-header::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.05'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      opacity: 0.3;
     }
 
-    .title {
-      font-size: 24px;
-      margin-top: 8px;
-      font-weight: bold;
+    .logo-container {
+      position: relative;
+      z-index: 2;
     }
 
-    .subtitle {
-      font-size: 15px;
-      color: #555;
+    .report-logo {
+      width: 60px;
+      height: 60px;
+      margin: 0 auto 1rem;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: var(--radius);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backdrop-filter: blur(10px);
+    }
+
+    .report-title {
+      font-size: 1.75rem;
+      font-weight: 700;
+      margin: 0 0 0.5rem 0;
+      position: relative;
+      z-index: 2;
+    }
+
+    .report-subtitle {
+      font-size: 1rem;
+      opacity: 0.9;
+      margin: 0;
+      font-weight: 300;
+      position: relative;
+      z-index: 2;
+    }
+
+    .report-content {
+      padding: 2rem;
     }
 
     .section {
-      margin-bottom: 30px;
+      margin-bottom: 2rem;
+    }
+
+    .section:last-child {
+      margin-bottom: 0;
     }
 
     .section-title {
-      font-size: 18px;
-      font-weight: bold;
-      margin-bottom: 8px;
-      border-bottom: 1px solid #ccc;
-      padding-bottom: 4px;
+      font-size: 1.25rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--text);
+      border-bottom: 2px solid #f1f5f9;
+      padding-bottom: 0.5rem;
     }
 
-    .info-table {
-      width: 100%;
-      border-collapse: collapse;
-      margin-top: 10px;
+    .section-icon {
+      width: 20px;
+      height: 20px;
+      color: var(--accent);
     }
 
-    .info-table td {
-      padding: 8px 10px;
-      vertical-align: top;
+    .patient-info {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      background: #f8fafc;
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
     }
 
-    .footer {
-      text-align: center;
-      font-size: 12px;
-      margin-top: 40px;
-      color: #888;
-      border-top: 1px solid #ddd;
-      padding-top: 10px;
+    .info-item {
+      display: flex;
+      flex-direction: column;
     }
 
-    ul {
+    .info-label {
+      font-weight: 600;
+      font-size: 0.875rem;
+      color: var(--muted);
+      margin-bottom: 0.25rem;
+    }
+
+    .info-value {
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    .diagnosis-summary {
+      background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+      padding: 1.5rem;
+      border-radius: var(--radius);
+      border: 1px solid #bfdbfe;
+    }
+
+    .diagnosis-name {
+      font-size: 1.25rem;
+      font-weight: 700;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .diagnosis-description {
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    .precautions-list {
+      list-style: none;
+      padding: 0;
       margin: 0;
-      padding-left: 20px;
+      display: grid;
+      gap: 0.75rem;
+    }
+
+    .precaution-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      padding: 1rem;
+      background: #f0fdf4;
+      border-radius: var(--radius);
+      border-left: 4px solid var(--accent);
+    }
+
+    .precaution-icon {
+      width: 16px;
+      height: 16px;
+      color: var(--accent);
+      flex-shrink: 0;
+      margin-top: 0.125rem;
+    }
+
+    .precaution-text {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    .report-footer {
+      background: #f8fafc;
+      padding: 1.5rem 2rem;
+      text-align: center;
+      border-top: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.875rem;
+    }
+
+    .disclaimer {
+      background: #fef3c7;
+      border: 1px solid #fbbf24;
+      border-radius: var(--radius);
+      padding: 1rem;
+      margin-bottom: 1rem;
+      color: #92400e;
+    }
+
+    .disclaimer-icon {
+      width: 16px;
+      height: 16px;
+      color: #f59e0b;
+      margin-right: 0.5rem;
+    }
+
+    /* Print Styles */
+    @media print {
+      body {
+        padding: 0;
+        background: white;
+      }
+      
+      .report-container {
+        box-shadow: none;
+        border-radius: 0;
+      }
+      
+      .report-header {
+        background: var(--accent) !important;
+        -webkit-print-color-adjust: exact;
+        color-adjust: exact;
+      }
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      body {
+        padding: 1rem;
+      }
+      
+      .patient-info {
+        grid-template-columns: 1fr;
+      }
+      
+      .report-content {
+        padding: 1.5rem;
+      }
+      
+      .report-header {
+        padding: 1.5rem;
+      }
     }
   </style>
 </head>
 
 <body>
-  <div class="header">
-    <img src="{{ url_for('static', filename='img/logo.jpg') }}" alt="Meddy Logo" class="logo" />
+  <div class="report-container">
+    <!-- Header -->
+    <div class="report-header">
+      <div class="logo-container">
+        <div class="report-logo">
+          <svg width="32" height="32" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="40" height="40" rx="8" fill="rgba(255,255,255,0.2)"/>
+            <path d="M20 8C15.6 8 12 11.6 12 16C12 20.4 15.6 24 20 24C24.4 24 28 20.4 28 16C28 11.6 24.4 8 20 8ZM20 22C16.7 22 14 19.3 14 16C14 12.7 16.7 10 20 10C23.3 10 26 12.7 26 16C26 19.3 23.3 22 20 22Z" fill="white"/>
+            <path d="M20 12C17.8 12 16 13.8 16 16C16 18.2 17.8 20 20 20C22.2 20 24 18.2 24 16C24 13.8 22.2 12 20 12Z" fill="white"/>
+            <path d="M20 26C18.9 26 18 26.9 18 28V30C18 31.1 18.9 32 20 32C21.1 32 22 31.1 22 30V28C22 26.9 21.1 26 20 26Z" fill="white"/>
+          </svg>
+        </div>
+        <h1 class="report-title">DiagnoseAI Medical Report</h1>
+        <p class="report-subtitle">AI-Generated Health Assessment</p>
+      </div>
+    </div>
 
-    <div class="title">DiagnoseAI — Meddy</div>
-    <div class="subtitle">AI Health Report Generated Automatically</div>
-  </div>
+    <!-- Content -->
+    <div class="report-content">
+      <!-- Disclaimer -->
+      <div class="disclaimer">
+        <div style="display: flex; align-items: flex-start; gap: 0.5rem;">
+          <svg class="disclaimer-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/>
+            <line x1="12" y1="9" x2="12" y2="13"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          <div>
+            <strong>Medical Disclaimer:</strong> This report is generated by AI for informational purposes only. 
+            Please consult with a qualified healthcare professional for proper medical diagnosis and treatment.
+          </div>
+        </div>
+      </div>
 
-  <div class="section">
-    <div class="section-title">👤 Patient Information</div>
-    <table class="info-table">
-      <tr>
-        <td><strong>Name:</strong> {{ data.name or 'N/A' }}</td>
-        <td><strong>Age:</strong> {{ data.age or 'N/A' }}</td>
-        <td><strong>Gender:</strong> {{ data.gender or 'N/A' }}</td>
-      </tr>
-      <tr>
-        <td colspan="3"><strong>Date:</strong> {{ data.date or 'N/A' }}</td>
-      </tr>
-    </table>
-  </div>
+      <!-- Patient Information -->
+      <div class="section">
+        <h2 class="section-title">
+          <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/>
+            <circle cx="12" cy="7" r="4"/>
+          </svg>
+          Patient Information
+        </h2>
+        
+        <div class="patient-info">
+          <div class="info-item">
+            <span class="info-label">Full Name</span>
+            <span class="info-value">{{ data.name or 'Not provided' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Age</span>
+            <span class="info-value">{{ data.age or 'Not provided' }} years</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Gender</span>
+            <span class="info-value">{{ data.gender|title or 'Not provided' }}</span>
+          </div>
+          <div class="info-item">
+            <span class="info-label">Report Date</span>
+            <span class="info-value">{{ data.date or 'Not available' }}</span>
+          </div>
+        </div>
+      </div>
 
-  <div class="section">
-    <div class="section-title">🩺 Diagnosis Summary</div>
-    <p><strong>Predicted Disease:</strong> {{ data.disease|title or 'Unknown' }}</p>
-    <p>{{ data.description or 'No description available for this condition.' }}</p>
-  </div>
+      <!-- Diagnosis Summary -->
+      <div class="section">
+        <h2 class="section-title">
+          <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+          </svg>
+          Diagnosis Summary
+        </h2>
+        
+        <div class="diagnosis-summary">
+          <div class="diagnosis-name">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            {{ data.disease|title or 'No diagnosis available' }}
+          </div>
+          <div class="diagnosis-description">
+            {{ data.description or 'No description available for this condition. Please consult with a healthcare professional for more information.' }}
+          </div>
+        </div>
+      </div>
 
-  <div class="section">
-    <div class="section-title">💊 Recommended Precautions</div>
-    {% if data.precautions %}
-      <ul>
-        {% for precaution in data.precautions %}
-          <li>{{ precaution }}</li>
-        {% endfor %}
-      </ul>
-    {% else %}
-      <p>No precautions provided.</p>
-    {% endif %}
-  </div>
+      <!-- Recommended Precautions -->
+      <div class="section">
+        <h2 class="section-title">
+          <svg class="section-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+          </svg>
+          Recommended Precautions
+        </h2>
+        
+        {% if data.precautions %}
+          <ul class="precautions-list">
+            {% for precaution in data.precautions %}
+              <li class="precaution-item">
+                <svg class="precaution-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <polyline points="9,11 12,14 22,4"/>
+                  <path d="M21,12v7a2,2 0 0,1 -2,2H5a2,2 0 0,1 -2,-2V5a2,2 0 0,1 2,-2h11"/>
+                </svg>
+                <span class="precaution-text">{{ precaution }}</span>
+              </li>
+            {% endfor %}
+          </ul>
+        {% else %}
+          <div class="precaution-item">
+            <svg class="precaution-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <circle cx="12" cy="12" r="10"/>
+              <line x1="12" y1="8" x2="12" y2="12"/>
+              <line x1="12" y1="16" x2="12.01" y2="16"/>
+            </svg>
+            <span class="precaution-text">No specific precautions provided. Please consult with a healthcare professional.</span>
+          </div>
+        {% endif %}
+      </div>
+    </div>
 
-  <div class="footer">
-    This report was auto-generated by Meddy AI. Please consult a licensed medical professional for confirmation.<br />
-    &copy; 2025 DiagnoseAI
+    <!-- Footer -->
+    <div class="report-footer">
+      <p><strong>Generated by DiagnoseAI</strong> • Powered by advanced machine learning</p>
+      <p>This report was automatically generated on {{ data.date or 'Unknown date' }}. 
+         For questions about this report, please consult with a qualified healthcare provider.</p>
+      <p style="margin-top: 1rem; font-size: 0.75rem; opacity: 0.8;">
+        © 2025 DiagnoseAI by Sundram Rai. All rights reserved.
+      </p>
+    </div>
   </div>
 </body>
 </html>
