@@ -427,3 +427,24 @@ Traceback (most recent call last):
 reportlab.pdfbase.ttfonts.TTFError: Can't open file "C:\Users\SUNDRA~1\AppData\Local\Temp\tmpsamtajxj"
 2025-09-01 22:04:07,369 - 127.0.0.1 - - [01/Sep/2025 22:04:07] "GET /download_pdf HTTP/1.1" 200 -
 2025-09-01 22:04:53,630 - 127.0.0.1 - - [01/Sep/2025 22:04:53] "POST /ask_ai HTTP/1.1" 200 -
+2025-09-01 22:30:00,831 - [31m[1mWARNING: This is a development server. Do not use it in a production deployment. Use a production WSGI server instead.[0m
+ * Running on all addresses (0.0.0.0)
+ * Running on http://127.0.0.1:5000
+ * Running on http://192.168.1.5:5000
+2025-09-01 22:30:00,832 - [33mPress CTRL+C to quit[0m
+2025-09-01 22:31:16,975 - 127.0.0.1 - - [01/Sep/2025 22:31:16] "GET / HTTP/1.1" 200 -
+2025-09-01 22:31:17,238 - 127.0.0.1 - - [01/Sep/2025 22:31:17] "GET /static/css/styles.css HTTP/1.1" 200 -
+2025-09-01 22:31:17,275 - 127.0.0.1 - - [01/Sep/2025 22:31:17] "GET /static/js/main.js HTTP/1.1" 200 -
+2025-09-01 22:31:20,456 - 127.0.0.1 - - [01/Sep/2025 22:31:20] "[33mGET /favicon.ico HTTP/1.1[0m" 404 -
+2025-09-01 22:31:34,980 - 127.0.0.1 - - [01/Sep/2025 22:31:34] "POST /start HTTP/1.1" 200 -
+2025-09-01 22:31:45,605 - 127.0.0.1 - - [01/Sep/2025 22:31:45] "POST /symptom HTTP/1.1" 200 -
+2025-09-01 22:31:45,734 - 127.0.0.1 - - [01/Sep/2025 22:31:45] "POST /symptom HTTP/1.1" 200 -
+2025-09-01 22:32:02,258 - 127.0.0.1 - - [01/Sep/2025 22:32:02] "POST /ask_ai HTTP/1.1" 200 -
+2025-09-01 22:32:22,652 - 127.0.0.1 - - [01/Sep/2025 22:32:22] "GET / HTTP/1.1" 200 -
+2025-09-01 22:32:22,708 - 127.0.0.1 - - [01/Sep/2025 22:32:22] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2025-09-01 22:32:22,709 - 127.0.0.1 - - [01/Sep/2025 22:32:22] "[36mGET /static/js/main.js HTTP/1.1[0m" 304 -
+2025-09-01 22:32:29,164 - 127.0.0.1 - - [01/Sep/2025 22:32:29] "POST /start HTTP/1.1" 200 -
+2025-09-01 22:32:36,725 - 127.0.0.1 - - [01/Sep/2025 22:32:36] "POST /symptom HTTP/1.1" 200 -
+2025-09-01 22:32:36,761 - 127.0.0.1 - - [01/Sep/2025 22:32:36] "POST /symptom HTTP/1.1" 200 -
+2025-09-01 22:32:42,541 - 127.0.0.1 - - [01/Sep/2025 22:32:42] "[36mGET /static/css/styles.css HTTP/1.1[0m" 304 -
+2025-09-01 22:32:42,549 - 127.0.0.1 - - [01/Sep/2025 22:32:42] "[33mGET /.well-known/appspecific/com.chrome.devtools.json HTTP/1.1[0m" 404 -

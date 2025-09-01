@@ -143,7 +143,7 @@ DiagnoseAI/
 The application requires pre-trained models in the `models/` directory:
 
 - `data.pth`: Neural network weights and vocabulary
-- `fitted_model.pickle2`: Disease prediction model
+- `fitted_model.pkl`: Disease prediction model
 
 ## 🚀 Deployment
 

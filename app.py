@@ -93,7 +93,7 @@ symptom_severity = symptom_severity.apply(
 with open('data/list_of_symptoms.pickle', 'rb') as f:
     symptoms_list = pickle.load(f)
 
-with open('models/fitted_model.pickle2', 'rb') as f:
+with open('models/fitted_model.pkl', 'rb') as f:
     prediction_model = pickle.load(f)
 
 # 🧑 User session state
