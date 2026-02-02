@@ -1,5 +1,4 @@
 import os
-import json
 import requests
 
 import torch
@@ -18,13 +17,10 @@ from xhtml2pdf import pisa
 from rapidfuzz import process
 from dotenv import load_dotenv
 from textblob import TextBlob
-from symspellpy import SymSpell, Verbosity
-from importlib.metadata import version as get_version  # ✅ Replacing pkg_resources
+from symspellpy import SymSpell
 
 from nnet import NeuralNet
 from nltk_utils import bag_of_words
-from nltk.corpus import stopwords
-from nltk.tokenize import word_tokenize
 
 # 🧠 NLTK Data Check
 try:
@@ -59,11 +55,15 @@ sym_spell.load_dictionary(dictionary_path, term_index=0, count_index=1)
 # 🔍 Logging Setup
 if not os.path.exists("logs"):
     os.makedirs("logs")
-logging.basicConfig(
-    filename="logs/unrecognized_symptoms.txt",
-    level=logging.INFO,
-    format="%(asctime)s - %(message)s"
-)
+logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
+_app_logger = logging.getLogger("diagnoseai")
+_fh = logging.FileHandler("logs/app.log", encoding="utf-8")
+_fh.setLevel(logging.INFO)
+_app_logger.addHandler(_fh)
+_symptom_logger = logging.getLogger("diagnoseai.unrecognized")
+_symptom_fh = logging.FileHandler("logs/unrecognized_symptoms.txt", encoding="utf-8")
+_symptom_fh.setLevel(logging.INFO)
+_symptom_logger.addHandler(_symptom_fh)
 
 # 📦 Load Model
 model_data = torch.load("models/data.pth")
@@ -93,8 +93,12 @@ symptom_severity = symptom_severity.apply(
 with open('data/list_of_symptoms.pickle', 'rb') as f:
     symptoms_list = pickle.load(f)
 
-with open('models/fitted_model.pkl', 'rb') as f:
-    prediction_model = pickle.load(f)
+prediction_model = None
+try:
+    with open('models/fitted_model.pkl', 'rb') as f:
+        prediction_model = pickle.load(f)
+except Exception as _e:
+    _app_logger.error(f"failed to load fitted model: {str(_e)}")
 
 # 🧑 User session state
 user_profile = {}
@@ -158,79 +162,64 @@ def set_user_profile():
 
 @app.route("/symptom", methods=["POST"])
 def predict_symptom():
-    raw_input = request.json.get("sentence", "").strip().lower()
-
-    if raw_input in {"done", "done.", "done!"}:
-        if not user_symptoms:
-            return jsonify("⚠️ Please enter at least one symptom before typing 'done'.")
-
-        x_test = [1 if s in user_symptoms else 0 for s in symptoms_list]
-        disease = prediction_model.predict(np.asarray(x_test).reshape(1, -1))[0].strip().lower()
-
-        try:
-            description = diseases_description.loc[diseases_description['Disease'] == disease, 'Description'].iloc[0]
-            precaution_row = disease_precaution[disease_precaution['Disease'] == disease]
-            precautions = ", ".join([
-                precaution_row['Precaution_1'].iloc[0],
-                precaution_row['Precaution_2'].iloc[0],
-                precaution_row['Precaution_3'].iloc[0],
-                precaution_row['Precaution_4'].iloc[0]
-            ])
-
-            result = []
-            for s, conf in user_symptoms.items():
-                severity = symptom_severity.loc[symptom_severity['Symptom'] == s.replace(" ", ""), 'weight'].iloc[0]
-                result.append({
-                    "symptom": s,
-                    "confidence": conf,
-                    "severity": int(severity),
-                    "description": description,
-                    "precautions": precautions.split(", "),
-                    "disease": disease.title()
-                })
-
-            session['report_data'] = {
-                "name": user_profile.get('name', 'User'),
-                "age": int(user_profile.get('age', 0)),
-                "gender": user_profile.get('gender', 'N/A'),
-                "disease": disease,
-                "description": description,
-                "precautions": precautions.split(", "),
-                "date": datetime.now().strftime("%d %B %Y"),
-            }
-
-            generate_pdf_report(user_profile, disease, description, precautions)
-            user_symptoms.clear()
-            return jsonify(result)
-
-        except Exception as e:
-            return jsonify(f"An error occurred while generating the report. ({str(e)})")
-
-    tokens = word_tokenize(raw_input)
-    stop_words = set(stopwords.words('english'))
-    filtered_tokens = [w for w in tokens if w.isalpha() and w not in stop_words]
-
-    responses = []
-    for phrase in filtered_tokens:
-        corrected = correct_input_with_llm(phrase)
-        if corrected != phrase:
-            responses.append(f"🤖 Did you mean '<b>{corrected}</b>'? Please confirm or retype.")
-            continue
-
-        symptom, prob = get_symptom(corrected)
-        if prob > 0.5:
-            user_symptoms[symptom] = prob
-            responses.append(f"✅ Symptom noted: '<b>{symptom}</b>' ({prob * 100:.1f}% confidence)")
+    if prediction_model is None:
+        return jsonify({"error": "model not loaded"}), 503
+    data = request.get_json(silent=True) or {}
+    symptoms = []
+    if isinstance(data.get("symptoms"), list):
+        symptoms = [str(s).strip().lower() for s in data.get("symptoms")]
+    elif isinstance(data.get("text"), str):
+        raw = data.get("text").strip().lower()
+        parts = [p.strip() for p in raw.replace(",", " ").split()]
+        symptoms = parts
+    symptoms = [s for s in symptoms if s not in {"done", "done.", "done!"} and s]
+    if not symptoms:
+        return jsonify({"error": "no valid symptoms provided"}), 400
+    known = []
+    unknown = []
+    sl_set = set(symptoms_list)
+    for s in symptoms:
+        if s in sl_set:
+            known.append(s)
         else:
-            fuzzy = fuzzy_match_symptom(phrase)
-            if fuzzy:
-                user_symptoms[fuzzy] = 0.6
-                responses.append(f"🤖 Typo detected. Added '<b>{fuzzy}</b>' (fuzzy match)")
-            else:
-                responses.append(f"❌ Couldn’t recognize: '<b>{phrase}</b>'")
-                logging.info(f"Unrecognized: {phrase}")
-
-    return jsonify("<br>".join(responses))
+            unknown.append(s)
+    if not known:
+        return jsonify({"error": "no recognized symptoms", "unknown_symptoms": unknown}), 400
+    try:
+        x_test = [1 if s in known else 0 for s in symptoms_list]
+        disease = prediction_model.predict(np.asarray(x_test).reshape(1, -1))[0].strip().lower()
+        description = diseases_description.loc[diseases_description['Disease'] == disease, 'Description'].iloc[0]
+        precaution_row = disease_precaution[disease_precaution['Disease'] == disease]
+        precautions = [
+            precaution_row['Precaution_1'].iloc[0],
+            precaution_row['Precaution_2'].iloc[0],
+            precaution_row['Precaution_3'].iloc[0],
+            precaution_row['Precaution_4'].iloc[0],
+        ]
+        details = []
+        for s in known:
+            sev = symptom_severity.loc[symptom_severity['Symptom'] == s.replace(" ", ""), 'weight'].iloc[0]
+            details.append({"symptom": s, "severity": int(sev)})
+        session['report_data'] = {
+            "name": user_profile.get('name', 'User'),
+            "age": int(user_profile.get('age', 0)) if str(user_profile.get('age', '0')).isdigit() else 0,
+            "gender": user_profile.get('gender', 'N/A'),
+            "disease": disease,
+            "description": description,
+            "precautions": precautions,
+            "date": datetime.now().strftime("%d %B %Y"),
+        }
+        generate_pdf_report(user_profile, disease, description, ", ".join(precautions))
+        return jsonify({
+            "disease": disease.title(),
+            "description": description,
+            "precautions": precautions,
+            "recognized_symptoms": details,
+            "unknown_symptoms": unknown,
+        }), 200
+    except Exception as _e:
+        _app_logger.error(f"inference error: {str(_e)}")
+        return jsonify({"error": "inference failure"}), 500
 
 @app.route("/download_report", methods=["GET"])
 def download_report():
@@ -305,6 +294,11 @@ def ask_ai():
     except Exception as e:
         return jsonify({"reply": f"⚠️ Error contacting AI model: {str(e)}"})
 
+@app.route("/healthz", methods=["GET"])
+def healthz():
+    if prediction_model is None:
+        return jsonify({"status": "unavailable"}), 503
+    return jsonify({"status": "ok"}), 200
 
 # 🚀 Run Server
 if __name__ == "__main__":
