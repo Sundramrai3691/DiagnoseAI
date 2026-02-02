@@ -97,6 +97,7 @@ prediction_model = None
 try:
     with open('models/fitted_model.pkl', 'rb') as f:
         prediction_model = pickle.load(f)
+    _app_logger.info("model loaded")
 except Exception as _e:
     _app_logger.error(f"failed to load fitted model: {str(_e)}")
 

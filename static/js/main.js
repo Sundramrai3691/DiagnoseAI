@@ -244,10 +244,45 @@ $(document).ready(function () {
   function handleSymptomInput(text) {
     const symptoms = text
       .split(/[,]|and|then/gi)
-      .map((s) => s.trim())
-      .filter(Boolean);
-
-    processSymptoms(symptoms, 0);
+      .map((s) => s.trim().toLowerCase())
+      .filter(Boolean)
+      .filter((s) => s !== "done");
+ 
+    $.ajax({
+      url: "/symptom",
+      method: "POST",
+      contentType: "application/json",
+      data: JSON.stringify({ symptoms }),
+      success: function (response) {
+        hideTyping();
+        setProcessing(false);
+        if (response && typeof response === "object" && response.error) {
+          appendBotMessage("⚠️ " + response.error);
+          if (Array.isArray(response.unknown_symptoms) && response.unknown_symptoms.length) {
+            appendBotMessage("Unrecognized: " + response.unknown_symptoms.join(", "));
+          }
+        } else if (response && typeof response === "object" && response.disease) {
+          const details = response;
+          const msg = `<div><strong>${details.disease}</strong><br>${details.description}<br>${(details.precautions || []).map((p)=>`• ${p}`).join("<br>")}</div>`;
+          appendBotMessage(msg);
+          pdfSection.slideDown(400);
+        } else if (typeof response === "string") {
+          appendBotMessage(response);
+        } else {
+          appendBotMessage("⚠️ Unexpected response");
+        }
+      },
+      error: function (xhr) {
+        hideTyping();
+        setProcessing(false);
+        const json = xhr.responseJSON;
+        if (json && json.error) {
+          appendBotMessage("⚠️ " + json.error);
+        } else {
+          appendBotMessage("⚠️ Something went wrong processing symptoms.");
+        }
+      },
+    });
   }
 
   function processSymptoms(symptomList, index) {
