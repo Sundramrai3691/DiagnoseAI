@@ -988,3 +988,12 @@ a:focus, button:focus, input:focus, select:focus, textarea:focus {
     border: 1px solid #ccc;
   }
 }
+
+/* Minimalist adjustments */
+.chat-container { max-width: 720px; margin: 24px auto; padding: 18px; background: #fff; border-radius: 10px; box-shadow: 0 6px 18px rgba(0,0,0,0.06); }
+.input-row { display:flex; gap:8px; align-items:center; }
+.btn { padding:8px 12px; border-radius:8px; border: none; cursor:pointer; }
+.spinner { width:18px; height:18px; border:3px solid rgba(0,0,0,0.08); border-top-color:#333; border-radius:50%; animation: spin 1s linear infinite; }
+@keyframes spin { to { transform: rotate(360deg);} }
+.toast-error { color:#b91c1c; font-weight:600; }
+.reply-fallback { font-size:0.95rem; opacity:0.9; }

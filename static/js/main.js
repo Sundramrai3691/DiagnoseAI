@@ -221,18 +221,23 @@ $(document).ready(function () {
       url: "/ask_ai",
       method: "POST",
       contentType: "application/json",
-      data: JSON.stringify({ message: text }),
+      data: JSON.stringify({ prompt: text }),
       success: function (response) {
         hideTyping();
-        appendBotMessage(
-          response.reply ||
-            "🤖 I couldn't process that question. Please try rephrasing."
-        );
+        const reply =
+          response && response.reply
+            ? response.reply
+            : "🤖 I couldn't process that question. Please try rephrasing.";
+        const badge =
+          response && response.source === "canned"
+            ? ' <span class="reply-fallback">(fallback)</span>'
+            : "";
+        appendBotMessage(`<strong>DiagnoseAI:</strong> ${reply}${badge}`);
       },
       error: function () {
         hideTyping();
         appendBotMessage(
-          "⚠️ I'm having trouble connecting right now. Please try again in a moment."
+          "⚠️ I'm having trouble connecting right now. Please try again in a moment.",
         );
       },
       complete: function () {
@@ -247,7 +252,7 @@ $(document).ready(function () {
       .map((s) => s.trim().toLowerCase())
       .filter(Boolean)
       .filter((s) => s !== "done");
- 
+
     $.ajax({
       url: "/symptom",
       method: "POST",
@@ -258,12 +263,21 @@ $(document).ready(function () {
         setProcessing(false);
         if (response && typeof response === "object" && response.error) {
           appendBotMessage("⚠️ " + response.error);
-          if (Array.isArray(response.unknown_symptoms) && response.unknown_symptoms.length) {
-            appendBotMessage("Unrecognized: " + response.unknown_symptoms.join(", "));
+          if (
+            Array.isArray(response.unknown_symptoms) &&
+            response.unknown_symptoms.length
+          ) {
+            appendBotMessage(
+              "Unrecognized: " + response.unknown_symptoms.join(", "),
+            );
           }
-        } else if (response && typeof response === "object" && response.disease) {
+        } else if (
+          response &&
+          typeof response === "object" &&
+          response.disease
+        ) {
           const details = response;
-          const msg = `<div><strong>${details.disease}</strong><br>${details.description}<br>${(details.precautions || []).map((p)=>`• ${p}`).join("<br>")}</div>`;
+          const msg = `<div><strong>${details.disease}</strong><br>${details.description}<br>${(details.precautions || []).map((p) => `• ${p}`).join("<br>")}</div>`;
           appendBotMessage(msg);
           pdfSection.slideDown(400);
         } else if (typeof response === "string") {
@@ -334,7 +348,7 @@ $(document).ready(function () {
           <span></span>
         </div>
       </div>
-    `
+    `,
       )
       .show();
 
@@ -342,18 +356,22 @@ $(document).ready(function () {
       url: "/ask_ai",
       method: "POST",
       contentType: "application/json",
-      data: JSON.stringify({ message: question }),
+      data: JSON.stringify({ prompt: question }),
       success: function (response) {
-        aiReplyDiv.html(
-          `<strong>DiagnoseAI:</strong> ${
-            response.reply || "I couldn't process that question."
-          }`
-        );
+        const reply =
+          response && response.reply
+            ? response.reply
+            : "I couldn't process that question.";
+        const badge =
+          response && response.source === "canned"
+            ? ' <span class="reply-fallback">(fallback)</span>'
+            : "";
+        aiReplyDiv.html(`<strong>DiagnoseAI:</strong> ${reply}${badge}`);
         askAIInput.val("");
       },
       error: function () {
         aiReplyDiv.html(
-          "⚠️ I'm having trouble connecting right now. Please try again."
+          "⚠️ I'm having trouble connecting right now. Please try again.",
         );
       },
       complete: function () {
@@ -390,7 +408,7 @@ $(document).ready(function () {
               <span class="symptom-name">${r.symptom}</span>
               <div class="symptom-meta">
                 <span class="confidence-badge ${getConfidenceClass(
-                  r.confidence
+                  r.confidence,
                 )}">
                   ${(r.confidence * 100).toFixed(1)}% confidence
                 </span>
@@ -399,7 +417,7 @@ $(document).ready(function () {
                 </span>
               </div>
             </div>
-          `
+          `,
             )
             .join("")}
         </div>
@@ -422,7 +440,7 @@ $(document).ready(function () {
                 </svg>
                 <span>${precaution}</span>
               </div>
-            `
+            `,
               )
               .join("")}
           </div>
@@ -443,7 +461,7 @@ $(document).ready(function () {
       {
         scrollTop: $("#diagnosis-results").offset().top - 100,
       },
-      800
+      800,
     );
   }
 
@@ -673,7 +691,7 @@ $(document).ready(function () {
         {
           scrollTop: target.offset().top - 100,
         },
-        800
+        800,
       );
     }
   });
