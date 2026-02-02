@@ -1,5 +1,6 @@
 import os
 import requests
+import json
 
 import torch
 import pickle
@@ -64,6 +65,52 @@ _symptom_logger = logging.getLogger("diagnoseai.unrecognized")
 _symptom_fh = logging.FileHandler("logs/unrecognized_symptoms.txt", encoding="utf-8")
 _symptom_fh.setLevel(logging.INFO)
 _symptom_logger.addHandler(_symptom_fh)
+
+_canned_replies = {}
+_canned_path = os.path.join(app.root_path, "data", "canned_replies.json")
+try:
+    with open(_canned_path, "r", encoding="utf-8") as _cf:
+        _canned_replies = json.load(_cf)
+    _app_logger.info("loaded canned replies")
+except Exception as _e:
+    _app_logger.error(f"failed to load canned_replies.json: {str(_e)}")
+    _canned_replies = {"default": "Sorry — please try again later."}
+
+_HF_API_KEY = os.environ.get("HUGGINGFACE_API_KEY")
+_HF_MODEL = os.environ.get("HUGGINGFACE_MODEL", "google/flan-t5-small")
+_HF_ENDPOINT = f"https://router.huggingface.co/models/{_HF_MODEL}"
+
+def _call_hf_inference(prompt, timeout=10):
+    if not _HF_API_KEY:
+        return {"ok": False, "error": "no_api_key"}
+    headers = {"Authorization": f"Bearer {_HF_API_KEY}"}
+    payload = {"inputs": prompt, "options": {"wait_for_model": False}}
+    try:
+        resp = requests.post(_HF_ENDPOINT, headers=headers, json=payload, timeout=timeout)
+        if resp.status_code == 200:
+            data = resp.json()
+            if isinstance(data, dict) and "error" in data:
+                return {"ok": False, "error": "hf_error", "details": data.get("error")}
+            if isinstance(data, list) and data and "generated_text" in data[0]:
+                text = data[0]["generated_text"]
+            elif isinstance(data, dict) and "generated_text" in data:
+                text = data["generated_text"]
+            else:
+                text = data if isinstance(data, str) else str(data)
+            return {"ok": True, "text": str(text)}
+        return {"ok": False, "error": "hf_status", "details": resp.text}
+    except requests.Timeout:
+        return {"ok": False, "error": "timeout"}
+    except Exception as _e:
+        return {"ok": False, "error": "exception", "details": str(_e)}
+
+def _select_canned_reply(prompt):
+    t = prompt.lower()
+    if any(k in t for k in ["fever", "temperature", "chill", "cough", "breath", "breathing"]):
+        return _canned_replies.get("fever_cough") or _canned_replies.get("default")
+    if any(k in t for k in ["covid", "corona", "sars-cov"]):
+        return _canned_replies.get("covid_like") or _canned_replies.get("default")
+    return _canned_replies.get("default")
 
 # 📦 Load Model
 model_data = torch.load("models/data.pth")
@@ -254,46 +301,24 @@ def download_pdf():
 # 🤖 Ask DiagnoseAI Anything Route
 @app.route("/ask_ai", methods=["POST"])
 def ask_ai():
-    data = request.get_json()
-    question = data.get("question") or data.get("message")
-
-    if not question or not question.strip():
-        return jsonify({"reply": "❌ Please enter a valid health-related query."})
-
-    HUGGINGFACE_API_KEY = os.getenv("HUGGINGFACE_API_KEY")
-    if not HUGGINGFACE_API_KEY:
-        return jsonify({"reply": "❌ Hugging Face API key not found in server environment."})
-
-    headers = {
-        "Authorization": f"Bearer {HUGGINGFACE_API_KEY}"
-    }
-    payload = {
-        "inputs": question.strip()
-    }
-
-    try:
-        hf_response = requests.post(
-            "https://api-inference.huggingface.co/models/google/flan-t5-small",
-            headers=headers,
-            json=payload,
-            timeout=15
-        )
-
-        if hf_response.status_code == 200:
-            output = hf_response.json()
-            reply = ""
-            if isinstance(output, list) and len(output) > 0:
-                reply = output[0].get("generated_text", "").strip()
-            elif isinstance(output, dict) and "generated_text" in output:
-                reply = output["generated_text"].strip()
-            else:
-                reply = str(output)
-            return jsonify({"reply": reply})
-        else:
-            return jsonify({"reply": f"⚠️ Hugging Face API error ({hf_response.status_code})"})
-
-    except Exception as e:
-        return jsonify({"reply": f"⚠️ Error contacting AI model: {str(e)}"})
+    if not request.is_json:
+        return jsonify(success=False, error="Expected JSON"), 400
+    payload = request.get_json() or {}
+    prompt = (payload.get("prompt") or payload.get("question") or payload.get("message") or "").strip()
+    if not prompt:
+        return jsonify(success=False, error="Empty prompt"), 400
+    system = (
+        "You are a concise medical triage assistant. Provide short, non-diagnostic guidance "
+        "and clearly recommend urgent care when danger signs are present. Use plain language."
+    )
+    full_prompt = f"{system}\nUser: {prompt}\nAssistant:"
+    hf_res = _call_hf_inference(full_prompt, timeout=8)
+    if hf_res.get("ok"):
+        reply_text = hf_res.get("text", "")[:2000]
+        return jsonify(success=True, reply=reply_text, source="hf"), 200
+    fallback_key = "network_error" if hf_res.get("error") in {"timeout", "exception", "hf_status"} else "model_unavailable"
+    canned = _select_canned_reply(prompt) or _canned_replies.get(fallback_key) or _canned_replies.get("default")
+    return jsonify(success=True, reply=canned, source="canned"), 200
 
 @app.route("/healthz", methods=["GET"])
 def healthz():

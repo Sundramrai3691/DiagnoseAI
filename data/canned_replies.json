@@ -1,0 +1,7 @@
+{
+  "default": "Thanks — I received your message. For a quick triage: rest, hydrate, and monitor symptoms. Please seek urgent care if breathing difficulty, severe chest pain, fainting, or confusion occurs.",
+  "fever_cough": "Fever with cough can be viral or bacterial. If fever > 38.5°C, worsening cough, or breathing difficulty, consult a doctor. Rest, fluids, antipyretic if needed.",
+  "covid_like": "Symptoms resemble a respiratory infection. Consider isolation, test for COVID-19 if available, and contact local health services if symptoms worsen.",
+  "network_error": "I couldn't reach the AI service right now. Here's a general suggestion: monitor vitals, stay hydrated, and see a clinician if symptoms escalate.",
+  "model_unavailable": "AI assistant temporarily unavailable. Please use the quick triage above or try again in a few minutes."
+}
