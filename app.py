@@ -308,8 +308,11 @@ def ask_ai():
     if not prompt:
         return jsonify(success=False, error="Empty prompt"), 400
     system = (
-        "You are a concise medical triage assistant. Provide short, non-diagnostic guidance "
-        "and clearly recommend urgent care when danger signs are present. Use plain language."
+        "System: You are a concise and careful medical triage assistant. You must never give a definitive diagnosis. For reported symptoms provide:\n"
+        "  1) A one-line likely category (e.g., viral, bacterial, allergic, unknown).\n"
+        "  2) Immediate red flags that require urgent care (bullet list).\n"
+        "  3) 2–3 practical next steps (testing, symptomatic care), and whether to seek medical help.\n"
+        " Keep replies short (max 3 sentences) and use plain language."
     )
     full_prompt = f"{system}\nUser: {prompt}\nAssistant:"
     hf_res = _call_hf_inference(full_prompt, timeout=8)
